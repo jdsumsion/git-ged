@@ -1,0 +1,1 @@
+alias git="git --git-dir=test.git"

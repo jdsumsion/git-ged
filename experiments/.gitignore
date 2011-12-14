@@ -1,4 +1,4 @@
 *.git
 
 # symlinked gems for easy rubymine editing
-grit*
+grit-2*

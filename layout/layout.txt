@@ -6,8 +6,7 @@ GIT-GED CONCEPTS
 - permaname for gedcom is the sha256 hash of the string "<email> <path/filename>"
 - subsequent imports of the same gedcom create new commits under the permaname ref
 - keep your email, paths & filenames consistent to maximize permaname collisions
-- includes a default LICENSE file that allows use of public data under Creative Commons Share Alike
-- allows the user to specify an alternate LICENSE at import time, with some well-known options made easily avilable
+- copies the repo's LICENSE_DEFAULT unless overridden by the user at ingest time
 
 2) Person
 - all imported persons are stored in standard JSON format under a "refs/heads/persons/{permaname}" ref
@@ -31,8 +30,7 @@ GIT-GED CONCEPTS
 - person merge decisions can be deferred by storing two person entities under the same permaname
   and letting the user make the before/after decision at a later time
 - multiple persons can be stored under the same permaname under 'entity1'..'entityN' blob names
-- copies the gedcom LICENSE if imported, populates a default LICENSE for newly-created persons that allows use of public data under Creative Commons Share Alike
-- allows the user to specify an alternate LICENSE at any time, with some well-known options made easily avilable
+- copies the gedcom LICENSE if imported, copies the repo's LICENSE_DEFAULT if a newly-created person
 
 3) Family
 - direct represenation of the family concept
@@ -46,8 +44,7 @@ GIT-GED CONCEPTS
 - family merge decisions can be deferred by storing two family entities under the same permaname
   and letting the user make the before/after decision at a later time
 - multiple families can be stored under the same permaname under 'entity1'..'entityN' blob names
-- copies the gedcom LICENSE if imported, populates a default LICENSE for newly-created persons that allows use of public data under Creative Commons Share Alike
-- allows the user to specify an alternate LICENSE at any time, with some well-known options made easily avilable
+- copies the gedcom LICENSE if imported, copies the repo's LICENSE_DEFAULT if a newly-created record
 
 4) Link Attribute
 - link attributes always refer to BOTH permaname & state
@@ -57,7 +54,12 @@ GIT-GED CONCEPTS
 - Init: populates refs/heads/master with LICENSE_DEFAULT, README, etc. as specified by user
 - Ingest: populates refs/local/gedcoms/{permaname} with a raw gedcom
 
-6) Deletion of records
+6) Data License
+- Data license defaults to Creative Commons Share-alike
+- Users can change license at repo/gedcom/record level
+- Other common license options are easily specifiable
+
+7) Deletion of Records
 - person/family/gedcom delete comes in three flavors:
   - "deref": I no longer care to track or maintain this person, if anyone has this person cloned, let them continue to maintain the record
   - "hide": I want the record gone on any repo that follows mine, if they fetch from me, make their record go away, dead-to-living transition uses this mechanism
@@ -79,7 +81,7 @@ refs/heads/master (fetchable, but non-mergeable):
 - README: simple documentation of git-ged, with pointer to software to parse/use
 - META: last version of git-ged that wrote; link to last intent
 - ENTITIES: list of gedcom/person/family permanames+state links, may end up needing to be sharded for very large repos
-- LICENSE_DEFAULT: default license for any new records added to this repository or any gedcoms imported without specifying LICENSE
+- LICENSE_DEFAULT: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
 - [non-versioned] CHANGELOG: contains last 100 edits performed, updated by git-ged commit
 
 refs/heads/intents/{permaname}:

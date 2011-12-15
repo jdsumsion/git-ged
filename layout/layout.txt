@@ -50,9 +50,12 @@ GIT-GED CONCEPTS
 - link attributes always refer to BOTH permaname & state
 - link attributes are encoded as XFN to start
 
-5) Init, Ingest, Import, Clone
+5) Init, Ingest, Import, Fetch, Clone
 - Init: populates refs/heads/master with LICENSE_DEFAULT, README, etc. as specified by user
 - Ingest: populates refs/local/gedcoms/{permaname} with a raw gedcom
+- Import: performs living filter and populates refs/heads/gedcoms/{permaname}, along with creating any new persons/families
+- Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
+- Clone: same as git clone
 
 6) Data License
 - Data license defaults to Creative Commons Share-alike

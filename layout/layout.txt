@@ -2,7 +2,8 @@ GIT-GED CONCEPTS
 ================
 
 1) Gedcom
-- all imported gedcoms are stored verbatim under a "refs/heads/gedcoms/{permaname}" ref
+- all ingested gedcoms are stored verbatim under a "refs/local/gedcoms/{permaname}" ref
+- all imported, living-filtered gedcoms are stored under a "refs/heads/gedcoms/{permaname}" ref
 - permaname for gedcom is the sha256 hash of the string "<email> <path/filename>"
 - subsequent imports of the same gedcom create new commits under the permaname ref
 - keep your email, paths & filenames consistent to maximize permaname collisions

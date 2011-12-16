@@ -1,0 +1,22 @@
+Bootstrapping
+- does this have to be a gem?
+  pros: easy to develop in ruby
+  pros: can use grit
+  pros: no split brain between bash/ruby
+  cons: have to install ruby to use it
+  cons: have to give someone instructions how they can get things up and running
+
+- create git-ged command that invokes git-ged-*
+- create templates area that refs/heads/master can be 
+
+
+GUI:
+  shoes
+EXE:
+  ocra
+  shoes (for GUIs)
+Tools:
+  differ (ruby) for string diffs, edit distance style
+  datadiff (perl) annotated diff
+  datadiff (python) patch production
+

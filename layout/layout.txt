@@ -83,7 +83,7 @@ refs/local/*:
 
 refs/heads/master (fetchable, but non-mergeable):
 - README: simple documentation of git-ged, with pointer to software to parse/use
-- META: last version of git-ged that wrote; link to last intent
+- META: last version of git-ged that wrote; link to last intent; links to various person roots
 - ENTITIES: list of gedcom/person/family permanames+state links, may end up needing to be sharded for very large repos
 - LICENSE_DEFAULT: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
 - [non-versioned] CHANGELOG: contains last 100 edits performed, updated by git-ged commit

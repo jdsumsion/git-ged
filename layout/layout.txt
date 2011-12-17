@@ -10,7 +10,7 @@ GIT-GED CONCEPTS
 - copies the repo's LICENSE_DEFAULT unless overridden by the user at ingest time
 
 2) Person
-- all imported persons are stored in standard JSON format under a "refs/heads/persons/{permaname}" ref
+- all imported persons are stored in a standard JSON format under a "refs/heads/persons/{permaname}" ref
 - permaname for person is the sha256 hash of the gedcom UID, or the sha256 hash of "<displayname>[ birthdate][ deathdate]"
 - although person permaname should remain largely constant, it can change for reasons of disambiguation
 - proper protection of living data
@@ -25,16 +25,17 @@ GIT-GED CONCEPTS
   - the "same-as" attribute is a loose identity link to an alternate history of a person
     determined to be the same historical person, it is a hint that a merge may be useful in the future
   - if the "not-same-as" attribute refers to a disconnected history of a *different* person under the same permaname,
-    it is best to change the permaname of the person this attribute is added to
+    it is best to change the permaname of each person this attribute is added to
 - person merge is often not needed if the persons originated unchanged from the same gedcom
-- person merge is often a "comes before/comes after" decision at import time
+- person merge may be a "comes before/comes after" decision at import time
 - person merge decisions can be deferred by storing two person entities under the same permaname
   and letting the user make the before/after decision at a later time
 - multiple persons can be stored under the same permaname under 'entity1'..'entityN' blob names
 - copies the gedcom LICENSE if imported, copies the repo's LICENSE_DEFAULT if a newly-created person
 
 3) Family
-- direct represenation of the family concept
+- direct represenation of the GEDCOM family concept
+- all imported families are stored in a standard JSON format under a "refs/heads/families/{permaname}" ref
 - permaname for family is the sha256 hash of the parents' permaname(s) in alphanumeric order
 - permaname should change if the parents' permanames are modified, or if a parent is replaced with a different person
 - includes person links for each person in each family position
@@ -49,7 +50,7 @@ GIT-GED CONCEPTS
 
 4) Link Attribute
 - link attributes always refer to BOTH permaname & state
-- link attributes are encoded as XFN to start
+- link attributes are encoded similar to XFN to start
 
 5) Init, Ingest, Import, Fetch, Clone
 - Init: populates refs/heads/master with LICENSE_DEFAULT, README, etc. as specified by user
@@ -108,7 +109,7 @@ refs/local/gedcoms/{permaname}:
 - fetch/clone/fork does NOT include the original gedcom, just the "post-import" one
 
 refs/heads/persons/{permaname}:
-- entity1: the primary person in standard JSON form
+- entity1: the primary person in a standard JSON form
 - entityN: alternate, not-yet-merged person records
 - entityX.{format}: the primary person (or an alternate) in an alternate format
 - META.entityX: link to intent; link(s) to gedcom permanames
@@ -133,7 +134,7 @@ refs/local/persons/{permaname}:
 - if both exist, the refs/heads record is used exclusively
 
 refs/heads/families/{permaname}:
-- entity1: the primary family in standard JSON form
+- entity1: the primary family in a standard JSON form
 - entityN: alternate, not-yet-merged family records
 - entityX.{format}: the primary person (or an alternate) in an alternate format
 - META.entityX: link to intent; link(s) to gedcom permanames

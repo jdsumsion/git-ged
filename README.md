@@ -1,6 +1,10 @@
 git-ged
 =======
 
+Status: experimental
+Author: John Sumsion
+Inspriation: Git, Tim Shadel
+
 GEDCOM plugin for Git.  As a `git` subcommand, git-ged lets you import and
 manage GEDCOM files in a versioned, shareable way in a Git repository.
 
@@ -10,8 +14,14 @@ genealogy from others who have imported it into their own repository.
 As a library, git-ged lets you write programs that communicate genealogical
 data in the git-ged repository layout.
 
-Status: experimental
-Author: John Sumsion
+As a repository implementation, git-ged also defines a repository
+specification that, if adhered to by alternate implementations will render
+all implementations data-compatible with each other.
+
+The genealogical data format for persons and relationships is yet to be
+decided.  The first cut will be one that is largely one-to-one compatible
+with GEDCOM 5.5.  I fully expect to change the format before this
+solidifies, and I'll use whatever is the commonly-accepted format.
 
 
 ## Requirements

@@ -52,12 +52,18 @@ GIT-GED CONCEPTS
 - link attributes always refer to BOTH permaname & state
 - link attributes are encoded similar to XFN to start
 
-5) Init, Ingest, Import, Fetch, Clone
+5) Init, Clone, Attach, Fetch, Workspace, Commit, Ingest, Import
 - Init: populates refs/heads/master with LICENSE_DEFAULT, README, etc. as specified by user
+- Clone: same as git clone
+- Attach: same as git remote add, except that it allows the user to define the set of permanames of interest in the remote repo
+- Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
+- Workspace: (subcommands: checkout, update, reset)
+  - checkout: grabs every specified person/family/gedcom permaname and puts it under the path repo/[persons|families|gedcoms]/{permaname} in a transient commit
+  - update: grabs the head of every specified person/family/gedcom permaname and puts it under a new refs/heads/workspace commit
+  - reset: warns if un-git-ged-committed refs/heads/workspace history, then nukes it and recreates a refs/heads/workspace commit with the same permanames as it had before
+- Commit: captures user intent, creates commits on every separate permaname that has changed
 - Ingest: populates refs/local/gedcoms/{permaname} with a raw gedcom
 - Import: performs living filter and populates refs/heads/gedcoms/{permaname}, along with creating any new persons/families
-- Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
-- Clone: same as git clone
 
 6) Data License
 - Data license defaults to Creative Commons Share-alike

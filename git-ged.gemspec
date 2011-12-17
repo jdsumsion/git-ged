@@ -28,7 +28,26 @@ Gem::Specification.new do |s|
   s.add_development_dependency('mocha')
 
   # = MANIFEST =
-  s.files = Dir.glob("{lib,TEST}/**/*.rb") + s.extra_rdoc_files + %w[Rakefile]
+  s.files = %w[
+    LICENSE
+    LICENSE.grit
+    README.md
+    Rakefile
+    TODO
+    git-ged.gemspec
+    layout.txt
+    lib/git-ged.rb
+    lib/git-ged/attach.rb
+    lib/git-ged/clone.rb
+    lib/git-ged/commit.rb
+    lib/git-ged/fetch.rb
+    lib/git-ged/import.rb
+    lib/git-ged/ingest.rb
+    lib/git-ged/init.rb
+    lib/git-ged/push.rb
+    lib/git-ged/repo.rb
+    lib/git-ged/workspace.rb
+  ]
   # = MANIFEST =
 
   s.test_files = s.files.select { |path| path =~ /^test\/test_.*\.rb/ }

@@ -1,13 +1,32 @@
-Bootstrapping
-- does this have to be a gem?
-  pros: easy to develop in ruby
-  pros: can use grit
-  pros: no split brain between bash/ruby
-  cons: have to install ruby to use it
-  cons: have to give someone instructions how they can get things up and running
+Structure
+- repo layout
+- library
+- commands
 
+Bootstrapping
+- patch gem-man to read README{,.md} in lieu of any explicit manpage (gem man rib)
+
+- create licenses subdir with data licenses by short-name
+- create templates area that refs/heads/master can be populated from during "git ged init"
 - create git-ged command that invokes git-ged-*
-- create templates area that refs/heads/master can be 
+- create lib/git-ged/init.rb that invokes git init + template population (normal or bare)
+- create lib/git-ged/ingest.rb that copies a GEDCOM in and assigns permaname (refs/local/gedcoms)
+- ingest one of Hannah's small GEDCOMs
+- ingest one of Hannah's full GEDCOMs
+- get rib-git-ged plugin working
+
+- create living filter pipe for filtering GEDCOMs
+- create lib/git-ged/import.rb that copies a GEDCOM from refs/{local=>heads}/gedcoms with living filter
+- create person/family permaname generation strategies (_UUID or name/birth/death, parent permanames)
+- create entity permaname+state link logic
+- create lib/git-ged/import-person.rb that copies refs/heads/{gedcoms=>persons} (with living filter)
+- create lib/git-ged/import-family.rb that copies refs/heads/{gedcoms=>families} (with living filter)
+- import one of Hannah's GEDCOMs
+
+- populate person/family => gedcom permaname+state links
+- create ingest logic for dealing with the second ingest/import cycle on the same GEDCOM
+  - pick default person/family permaname generation logic based on whether the _UUIDs match up
+  - create local/gedcoms history based on 
 
 
 GUI:

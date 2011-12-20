@@ -17,6 +17,7 @@ require 'grit'
 require 'git-ged/repo'
 
 # repo interation
+require 'git-ged/help'
 require 'git-ged/init'
 require 'git-ged/clone'
 require 'git-ged/attach'

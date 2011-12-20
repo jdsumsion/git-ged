@@ -1,6 +1,5 @@
 require File.join(File.dirname(__FILE__), *%w[.. lib git-ged])
 
-require 'rubygems'
 require 'test/unit'
 gem "mocha", ">=0"
 require 'mocha'

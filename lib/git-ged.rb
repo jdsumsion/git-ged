@@ -16,21 +16,21 @@ require 'grit'
 # common libraries
 require 'git-ged/repo'
 
-# repo interation
-require 'git-ged/help'
-require 'git-ged/init'
-require 'git-ged/clone'
-require 'git-ged/attach'
-require 'git-ged/fetch'
-require 'git-ged/push'
+# git-like repo interation
+require 'git-ged/help_cmd'
+require 'git-ged/init_cmd'
+require 'git-ged/clone_cmd'
+require 'git-ged/attach_cmd'
+require 'git-ged/fetch_cmd'
+require 'git-ged/push_cmd'
 
-# common over-and-above-git commands
-require 'git-ged/workspace'
-require 'git-ged/commit'
+# over-and-above-git commands
+require 'git-ged/workspace_cmd'
+require 'git-ged/commit_cmd'
 
-# high-level mutators
-require 'git-ged/ingest'
-require 'git-ged/import'
+# high-level git-ged mutators
+require 'git-ged/ingest_cmd'
+require 'git-ged/import_cmd'
 
 # internal support classes
 

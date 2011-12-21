@@ -17,20 +17,20 @@ require 'grit'
 require 'git-ged/repo'
 
 # git-like repo interation
-require 'git-ged/help_cmd'
-require 'git-ged/init_cmd'
-require 'git-ged/clone_cmd'
-require 'git-ged/attach_cmd'
-require 'git-ged/fetch_cmd'
-require 'git-ged/push_cmd'
+autoload :HelpCmd, 'git-ged/help_cmd'
+autoload :InitCmd, 'git-ged/init_cmd'
+autoload :CloneCmd, 'git-ged/clone_cmd'
+autoload :AttachCmd, 'git-ged/attach_cmd'
+autoload :FetchCmd, 'git-ged/fetch_cmd'
+autoload :PushCmd, 'git-ged/push_cmd'
 
 # over-and-above-git commands
-require 'git-ged/workspace_cmd'
-require 'git-ged/commit_cmd'
+autoload :WorkspaceCmd, 'git-ged/workspace_cmd'
+autoload :CommitCmd, 'git-ged/commit_cmd'
 
 # high-level git-ged mutators
-require 'git-ged/ingest_cmd'
-require 'git-ged/import_cmd'
+autoload :IngestCmd, 'git-ged/ingest_cmd'
+autoload :ImportCmd, 'git-ged/import_cmd'
 
 # internal support classes
 

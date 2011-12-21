@@ -4,6 +4,7 @@ Structure
 - commands
 
 Bootstrapping
+- integrate OptionParser (stdlib) and subcommand (gem) into git-ged commands
 - patch gem-man to read README{,.md} in lieu of any explicit manpage (gem man rib)
 
 - create licenses subdir with data licenses by short-name

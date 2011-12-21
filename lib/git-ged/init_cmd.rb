@@ -1,9 +1,7 @@
-module GitGed
-  class InitCmd
+require 'git-ged/cmd_support'
 
-    def name
-      "init"
-    end
+module GitGed
+  class InitCmd < CmdSupport
 
     def description
       "Initializes a new git-ged repo"

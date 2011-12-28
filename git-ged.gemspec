@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 
   s.name              = 'git-ged'
   s.version           = GitGed::VERSION
-  s.date              = '2011-12-17'
+  s.date              = '2011-12-28'
   #s.rubyforge_project = 'git-ged'
 
   s.summary     = "GEDCOM plugin for Git"
@@ -37,16 +37,18 @@ Gem::Specification.new do |s|
     git-ged.gemspec
     layout.txt
     lib/git-ged.rb
-    lib/git-ged/attach.rb
-    lib/git-ged/clone.rb
-    lib/git-ged/commit.rb
-    lib/git-ged/fetch.rb
-    lib/git-ged/import.rb
-    lib/git-ged/ingest.rb
-    lib/git-ged/init.rb
-    lib/git-ged/push.rb
+    lib/git-ged/attach_cmd.rb
+    lib/git-ged/clone_cmd.rb
+    lib/git-ged/cmd_support.rb
+    lib/git-ged/commit_cmd.rb
+    lib/git-ged/fetch_cmd.rb
+    lib/git-ged/help_cmd.rb
+    lib/git-ged/import_cmd.rb
+    lib/git-ged/ingest_cmd.rb
+    lib/git-ged/init_cmd.rb
+    lib/git-ged/push_cmd.rb
     lib/git-ged/repo.rb
-    lib/git-ged/workspace.rb
+    lib/git-ged/workspace_cmd.rb
   ]
   # = MANIFEST =
 

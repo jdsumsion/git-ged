@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 
   s.name              = 'git-ged'
   s.version           = GitGed::VERSION
-  s.date              = '2011-12-28'
+  s.date              = '2011-12-30'
   #s.rubyforge_project = 'git-ged'
 
   s.summary     = "GEDCOM plugin for Git"
@@ -25,6 +25,8 @@ Gem::Specification.new do |s|
 
   s.add_dependency('grit', "~> 2.4.1")
 
+  s.executables << 'git-ged'
+
   s.add_development_dependency('mocha')
 
   # = MANIFEST =
@@ -34,6 +36,7 @@ Gem::Specification.new do |s|
     README.md
     Rakefile
     TODO
+    bin/git-ged
     git-ged.gemspec
     layout.txt
     lib/git-ged.rb

@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+require 'optparse'
+
+VERSION = "1.2.4"
+
+class Foo
+
+  def initialize
+    @options = {}
+    @option_parser = OptionParser.new("git-ged") do |o|
+      o.version = VERSION
+      o.on("-T [level]", /^[0-4]$/) {|x| @options[:T] = x }
+    end
+  end
+
+  def run argv=[]
+    @option_parser.parse! argv
+    puts "opts=#{@options.inspect}"
+    puts "args=#{argv}"
+  end
+
+end
+
+Foo.new.run ARGV

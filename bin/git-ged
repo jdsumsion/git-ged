@@ -8,7 +8,7 @@ class Main
   def initialize
     @options = {}
     @option_parser = OptionParser.new("git-ged") do |o|
-      o.version = GitGed::VERSION
+      o.version = "v#{GitGed::VERSION}"
       o.on("-T [level]", /^[0-4]$/) {|x| @options[:T] = x }
     end
   end

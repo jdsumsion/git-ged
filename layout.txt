@@ -4,8 +4,13 @@ GIT-GED CONCEPTS
 1) Gedcom
 - all ingested gedcoms are stored verbatim under a "refs/local/gedcoms/{permaname}" ref
 - all imported, living-filtered gedcoms are stored under a "refs/heads/gedcoms/{permaname}" ref
+- there are multiple permanames for a gedcom:
+  - FILE & SUBM name[/email]
+  - FILE & DATE
+  - source path & SUBM name
+  - canonical hash of all person _UUIDs
 - permaname for gedcom is the sha256 hash of the string "<email> <path/filename>"
-- subsequent imports of the same gedcom create new commits under the permaname ref
+- subsequent imports of the same gedcom create new commits under any permaname ref
 - keep your email, paths & filenames consistent to maximize permaname collisions
 - copies the repo's LICENSE_DEFAULT unless overridden by the user at ingest time
 
@@ -103,16 +108,21 @@ refs/heads/intents/{permaname}:
 - able to generate a feed of intents from here
 
 refs/heads/gedcoms/{permaname}:
-- gedcom.ged: the living-filtered gedcom file renamed to a standard filename
+- file1.ged: the living-filtered gedcom file renamed to a standard filename
+- fileN.ged: the living-filtered gedcom file renamed to a standard filename
 - contains no living data, as a result of "ingest" followed by "import"
-- META: link to intent; original file name & path; where/who the file came from
-- LICENSE: license for use of this gedcom as a whole, copied to individual persons/families at import time
+- META.fileX.ged: link to intent; original file name & path; where/who the file came from; all permanames this gedcom was stored under (by permaname kind)
+- LICENSE.fileX.ged: license for use of this gedcom as a whole, copied to individual persons/families at import time
 
 refs/local/gedcoms/{permaname}:
-- *may* contain living data, populated by "ingest"
-- if the gedcom contains no living data, "import" can delete 
+- *may* contain living data, populated without filtering by "ingest"
+- file1.ged: the raw gedcom file renamed to a standard filename
+- fileN.ged: the raw gedcom file renamed to a standard filename
+- pre-existing permanames get forwarded up to the new tree (collisions, yay!)
+- new permanames get created, non-colliding permanames don't get forwarded (gc'd by some other mechanism)
+- if the gedcom contains no living data, "import" can delete the refs/local refs
 - can coexist with refs/heads/gedcoms/{permaname} for a while as documentation of exactly what got imported
-- fetch/clone/fork does NOT include the original gedcom, just the "post-import" one
+- fetch/clone/fork does NOT include the original gedcom, just the "post-import" one (because only refs/heads comes along)
 
 refs/heads/persons/{permaname}:
 - entity1: the primary person in a standard JSON form

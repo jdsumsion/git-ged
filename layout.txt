@@ -71,9 +71,10 @@ GIT-GED CONCEPTS
 - Import: performs living filter and populates refs/heads/gedcoms/{permaname}, along with creating any new persons/families
 
 6) Data License
-- Data license defaults to Creative Commons Share-alike
-- Users can change license at repo/gedcom/record level
+- Data license defaults to Creative Commons Attribution-Sharealike 3.0 Unported
+- Users can update license at repo/gedcom/record level
 - Other common license options are easily specifiable
+  - Other options: CC-BY 3.0, CC0, Open Data Commons PDDL/Attribution/ODbL
 
 7) Deletion of Records
 - person/family/gedcom delete comes in three flavors:

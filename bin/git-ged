@@ -1,9 +1,10 @@
 #!/usr/bin/env ruby
 
-require 'optparse'
 require 'git-ged'
+require 'optparse'
+require 'subcommand'
 
-class Main
+class CLI
 
   def initialize
     @options = {}
@@ -21,4 +22,4 @@ class Main
 
 end
 
-Main.new.run ARGV
+CLI.new.run ARGV

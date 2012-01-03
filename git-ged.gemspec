@@ -8,11 +8,11 @@ Gem::Specification.new do |s|
 
   s.name              = 'git-ged'
   s.version           = GitGed::VERSION
-  s.date              = '2011-12-30'
+  s.date              = '2012-01-03'
   #s.rubyforge_project = 'git-ged'
 
   s.summary     = "GEDCOM plugin for Git"
-  s.description = "git-ged is a Ruby toolset for managing genealogical data (GEDCOM) inside a Git reposity."
+  s.description = "git-ged is a Ruby toolset for managing genealogical data (GEDCOM) inside a Git repository."
 
   s.authors  = ["John Sumsion"]
   s.email    = 'jdsumsion@gmail.com'

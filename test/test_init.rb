@@ -1,6 +1,6 @@
 require File.dirname(__FILE__) + '/helper'
 
-class TestInitCmd < Test::Unit::TestCase
+class TestInit < Test::Unit::TestCase
 
   def setup
   end

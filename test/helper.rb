@@ -1,8 +1,9 @@
 require File.join(File.dirname(__FILE__), *%w[.. lib git-ged])
 
 require 'test/unit'
-gem "mocha", ">=0"
 require 'mocha'
+
+require 'tmpdir'
 
 GIT_GED_REPO = ENV["GIT_GED_REPO"] || File.expand_path(File.join(File.dirname(__FILE__), '..'))
 

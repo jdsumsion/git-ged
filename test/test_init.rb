@@ -5,4 +5,11 @@ class TestInit < Test::Unit::TestCase
   def setup
   end
 
+  def test_init
+    Dir.mktmpdir do |tmpdir|
+      Repo.new.init([tmpdir])
+      assert Dir.exists?("#{tmpdir}/.git")
+    end
+  end
+
 end

@@ -17,6 +17,7 @@ require 'grit'
 require 'git-ged/repo'
 
 # git-like repo interaction
+require 'git-ged/cli'
 require 'git-ged/init'
 
 # internal support classes
@@ -30,6 +31,8 @@ module GitGed
       VERSION
     end
 
+    attr_accessor :debug
+
     def grit_debug= onoff
       Grit.debug = onoff
     end
@@ -42,6 +45,7 @@ module GitGed
     end
   end
 
+  self.debug = false
   self.grit_debug = false
 
   @logger ||= ::Logger.new(STDOUT)

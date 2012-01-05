@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 
   s.name              = 'git-ged'
   s.version           = GitGed::VERSION
-  s.date              = '2012-01-03'
+  s.date              = '2012-01-05'
   #s.rubyforge_project = 'git-ged'
 
   s.summary     = "GEDCOM plugin for Git"
@@ -41,6 +41,7 @@ Gem::Specification.new do |s|
     git-ged.gemspec
     layout.txt
     lib/git-ged.rb
+    lib/git-ged/cli.rb
     lib/git-ged/init.rb
     lib/git-ged/repo.rb
   ]

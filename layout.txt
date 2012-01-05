@@ -15,20 +15,26 @@ GIT-GED CONCEPTS
 - copies the repo's LICENSE_DEFAULT unless overridden by the user at ingest time
 
 2) Person
-- all imported persons are stored in a standard JSON format under a "refs/heads/persons/{permaname}" ref
-- permaname for person is the sha256 hash of the gedcom UID, or the sha256 hash of "<displayname>[ birthdate][ deathdate]"
-- although person permaname should remain largely constant, it can change for reasons of disambiguation
+- all imported persons are stored in a standard JSON format under a "refs/heads/persons/{permaname}" refs
+- there are multiple permanames for a person:
+  - one is designated as primary, all permanames are annotated internally to the person by a versioned hash function (for easy recomputation)
+  - primary permaname for person defaults to the sha256 hash of the gedcom UID + sorted 'not-same-as' list
+  - alternate permaname for person is the sha256 hash of "<displayname>[ birthdate][ deathdate][ sorted 'not-same-as' list]" (can be designated as primary)
+  - alternate permaname for person is the sha256 hash of "<displayname> child of <permaname>" (for each parent, if there is no birth/death)
+  - other alternate permanames are definable, as long as the context-free code for computing them is included under refs/heads/code
+  - permanames based on "displayname" state should not change when the person's name is updated, they are designed to produce collisions based on import data
+  - although a person's primary permaname should remain largely constant, it can change for reasons of disambiguation (addition of a 'not-same-as' link)
 - proper protection of living data
   - all imported persons must be deceased and publicly-viewable, or the record will initially exist under the "refs/local/persons/..." refspace
   - import is responsible for initially segmenting living vs. deceased, but after import the app is responsible for calculating living after edit and moving the record if necessary
   - the same living check & segmentation logic that import uses will be available on-demand for apps to use after edit
   - when a deceased record is made living, the deceased record's permaname gets a new commit that marks it as no-longer-visible (so that on subsequent fetch, other repositories can delete their records)
-- includes optional "derived-from", "supersedes", "superseded-by", "same-as", and "not-same-as" link attributes
-  - each of these link attributes refers to another person permaname+state reference
+- includes optional "supersedes", "superseded-by", "derived-from", "same-as", and "not-same-as" link attributes
+  - see 
   - the "derived-from", "supersedes", and "superseded-by" link attributes allow for proper history-aware
-    linkage across permanames for tracing complicated person record derivation
+    linkage across permanames for tracing merge or other complicated person record derivation
   - the "same-as" attribute is a loose identity link to an alternate history of a person
-    determined to be the same historical person, it is a hint that a merge may be useful in the future
+    determined to be the same historical person, it is a hint that a merge or other record derivation may be useful in the future
   - if the "not-same-as" attribute refers to a disconnected history of a *different* person under the same permaname,
     it is best to change the permaname of each person this attribute is added to
 - person merge is often not needed if the persons originated unchanged from the same gedcom
@@ -40,11 +46,16 @@ GIT-GED CONCEPTS
 
 3) Family
 - direct represenation of the GEDCOM family concept
-- all imported families are stored in a standard JSON format under a "refs/heads/families/{permaname}" ref
-- permaname for family is the sha256 hash of the parents' permaname(s) in alphanumeric order
-- permaname should change if the parents' permanames are modified, or if a parent is replaced with a different person
+- all imported families are stored in a standard JSON format under a "refs/heads/families/{permaname}" refs
+- there are multiple permanames for a family:
+  - one is designated as primary, all permanames are annotated internally to the family by a versioned hash function (for easy recomputation)
+  - primary permaname for family defaults to the sha256 hash of the parents' primary permanames in alphanumeric order
+  - alternate permaname for family is the sha256 hash of "<displayname>[ displayname][ marriage date]" (if there is marriage information, displaynames ordered by primary permaname alphanumeric ordering of parents)
+  - other alternate permanames are definable, as long as the context-free code for computing them is included under refs/heads/code
+  - permanames based on "displayname" state should not change when the person's name is updated, they are designed to produce collisions based on import data
+  - primary permaname should change if the parents' permanames are modified, or if a parent is replaced with a different person
 - includes person links for each person in each family position
-- includes optional "derived-from", "supersedes", "superseded-by", "same-as", and "not-same-as" link attributes (like person)
+- includes optional "supersedes", "superseded-by", "derived-from", "same-as", and "not-same-as" link attributes (like person)
 - includes optional "prior-family" link attribute that tracks temporal household dissolution & recomposition
 - family merge is often not needed if the family originated unchanged from the same gedcom
 - family merge can be a "comes before/comes after" decision at import time, but is not as likely as person to fit this workflow
@@ -54,35 +65,54 @@ GIT-GED CONCEPTS
 - copies the gedcom LICENSE if imported, copies the repo's LICENSE_DEFAULT if a newly-created record
 
 4) Link Attribute
-- link attributes always refer to BOTH permaname & state
+- link attributes always refer to BOTH primary permaname & state
 - link attributes are encoded similar to XFN to start
 
-5) Init, Clone, Attach, Fetch, Workspace, Commit, Ingest, Import
-- Init: populates refs/heads/master with LICENSE_DEFAULT, README, etc. as specified by user
+5) Merge Strategies
+- merge comes in at least 4 flavors:
+  a) [import] alternate record storage + history linkage (recommended for automated import processes)
+  b) [post-import] "comes before/comes after" record replacement strategy for dealing with record reconciliation
+  c) [post-import] "pick correct values" record reconciliation strategy for dealing with partial truth from multiple sources (sets "derived-from" attribute(s))
+  d) [post-import] "disambiguation" record reconciliation strategy for separating records that are NOT the same person (sets "not-same-as" attribute(s))
+- of course anyone can do anything they please to their records, but these strategies seem to deserve automation support
+
+6) Record deriviation tracing
+- each of the following link attributes refers to another record via permaname+state reference
+- "supersedes" indicates that a person (or family) is a full, identical replacement for another (used to be able to react to remote merges)
+- "superseded-by" indicates that a static, not-to-be-further-edited  person (or family) is left behind after having been merged into the canonical record (used to detect conflicts between local edits & remote merge or vice versa)
+- "derived-from" indicates a clone-and-mutate to disambiguate a fully-merged record that represents two distinct historical persons or families (used to document manual record reconstruction efforts)
+- "same-as" indicates a more-tentative-than-merge attempt at establishing identity to allow for disparate efforts to proceed before attempting a full merge
+- "not-same-as" indicates a definitive statement that one person (or family) is NOT the same as another (used when extracting a half-merged entity that collided on a permaname)
+- "prior-family" indicates that a family has many of the same members of a prior family, but temporal household dissolution & recomposition require two different families to be tracked (allows for "current family" computations based on a directed graph of prior-family edges)
+
+7) Git-ged commands
+- Init: populates refs/heads/{master,content,intent} with README, LICENSE_DEFAULT, etc. as specified by user
 - Clone: same as git clone
 - Attach: same as git remote add, except that it allows the user to define the set of permanames of interest in the remote repo
 - Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
+- Push: same as git push, except that only permanames that the remote repo has are updated
 - Workspace: (subcommands: checkout, update, reset)
   - checkout: grabs every specified person/family/gedcom permaname and puts it under the path repo/[persons|families|gedcoms]/{permaname} in a transient commit
   - update: grabs the head of every specified person/family/gedcom permaname and puts it under a new refs/heads/workspace commit
   - reset: warns if un-git-ged-committed refs/heads/workspace history, then nukes it and recreates a refs/heads/workspace commit with the same permanames as it had before
-- Commit: captures user intent, creates commits on every separate permaname that has changed
-- Ingest: populates refs/local/gedcoms/{permaname} with a raw gedcom
+- Intent: captures user intent (separate from commit message)
+- Commit: creates commits on every separate permaname that has changed, using current intent as default commit subject plus details of all entities that changed
+- Ingest: populates refs/local/gedcoms/{permaname(s)} with a raw gedcom
 - Import: performs living filter and populates refs/heads/gedcoms/{permaname}, along with creating any new persons/families
 
-6) Data License
-- Data license defaults to Creative Commons Attribution-Sharealike 3.0 Unported
+8) Data Licenses
+- Data license defaults to Creative Commons Attribution-ShareAlike 3.0 Unported
 - Users can update license at repo/gedcom/record level
 - Other common license options are easily specifiable
-  - Other options: CC-BY 3.0, CC0, Open Data Commons PDDL/Attribution/ODbL
+  - Other Creative Commons options: CC-BY-3.0, CC-BY-NC-3.0, CC-BY-NC-SA-3.0, CC0-1.0
+  - Open Data Commons options: ODC-PDDL-1.0, ODC-BY-1.0, ODC-ODBL-1.0
 
-7) Deletion of Records
+9) Deletion of Records
 - person/family/gedcom delete comes in three flavors:
   - "deref": I no longer care to track or maintain this person, if anyone has this person cloned, let them continue to maintain the record
-  - "hide": I want the record gone on any repo that follows mine, if they fetch from me, make their record go away, dead-to-living transition uses this mechanism
-  - "delete": I want the record gone on any repo that follows mine, if they fetch from me, make their record go away
-- "hide" and "delete" stubs hang around for a limited amount of time, and there is a mechanism that automatically cleans them up every so often
-- "hide" stubs have a shorter time-to-live threshold than "delete" stubs
+  - "hide": I want the record gone on any repo that follows mine, if they fetch from me, MAKE their record go away, dead-to-living transition uses this mechanism
+  - "delete": I want the record gone on any repo that follows mine, if they fetch from me, SUGGEST that their record go away
+- "hide" and "delete" stubs hang around for a longish-but-limited amount of time, and there is a mechanism that automatically cleans them up every so often
 
 
 GIT-GED REFS LAYOUT
@@ -96,75 +126,72 @@ refs/local/*:
 
 refs/heads/master (fetchable, but non-mergeable):
 - README: simple documentation of git-ged, with pointer to software to parse/use
-- META: last version of git-ged that wrote; link to last intent; links to various person roots
-- ENTITIES: list of gedcom/person/family permanames+state links, may end up needing to be sharded for very large repos
-- LICENSE_DEFAULT: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
-- [non-versioned] CHANGELOG: contains last 100 edits performed, updated by git-ged commit
 
-refs/heads/intents/{permaname}:
-- INTENT: stores the user's identity, intent message, and date in the tree itself to capture "why"
-- MUST exist: if no intent is explicitly stored, import/edit must stub one in that describes the largest-scope action being taken
+refs/heads/content (fetchable, but non-mergeable):
+- META: last version of git-ged that wrote
+- INTENT: link to last intent
+- ROOTS: links to various person roots
+- ENTITIES: list of gedcom/person/family permaname+state links, may end up needing to be sharded for very large repos
+- LICENSE_DEFAULT: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
+- [non-versioned] CHANGELOG: contains up to last 100 edits performed, updated by git-ged commit
+
+refs/heads/intent (fetchable, but non-mergeable):
+- INTENT: stores the user's identity, single-line intent message, and date in the tree itself to capture "why"
+- MUST exist: if no intent is explicitly stored, init/import/edit must stub one in that describes the largest-scope action being taken
 - able to be as fine-grained and meticulous as the user wants to be, while allowing the user
   the convenience of keeping the same intent over several small actions moving toward a large-time-scale goal
 - able to generate a feed of intents from here
 
-refs/heads/gedcoms/{permaname}:
-- file1.ged: the living-filtered gedcom file renamed to a standard filename
-- fileN.ged: the living-filtered gedcom file renamed to a standard filename
+refs/heads/gedcoms/{permanames}:
+- ged1: the living-filtered gedcom file renamed to a standard filename
+- gedN: the living-filtered gedcom file renamed to a standard filename
 - contains no living data, as a result of "ingest" followed by "import"
-- META.fileX.ged: link to intent; original file name & path; where/who the file came from; all permanames this gedcom was stored under (by permaname kind)
-- LICENSE.fileX.ged: license for use of this gedcom as a whole, copied to individual persons/families at import time
+- gedX.META: link to intent; original file name & path; where/who the file came from; all permanames this gedcom was stored under (by permaname kind)
+- gedX.LICENSE: license for use of this gedcom as a whole, copied to individual persons/families at import time
 
-refs/local/gedcoms/{permaname}:
+refs/local/gedcoms/{permanames}:
 - *may* contain living data, populated without filtering by "ingest"
-- file1.ged: the raw gedcom file renamed to a standard filename
-- fileN.ged: the raw gedcom file renamed to a standard filename
+- ged1.ged: the raw gedcom file renamed to a standard filename
+- gedN.ged: the raw gedcom file renamed to a standard filename
 - pre-existing permanames get forwarded up to the new tree (collisions, yay!)
 - new permanames get created, non-colliding permanames don't get forwarded (gc'd by some other mechanism)
 - if the gedcom contains no living data, "import" can delete the refs/local refs
 - can coexist with refs/heads/gedcoms/{permaname} for a while as documentation of exactly what got imported
 - fetch/clone/fork does NOT include the original gedcom, just the "post-import" one (because only refs/heads comes along)
 
-refs/heads/persons/{permaname}:
+refs/heads/persons/{permanames}:
 - entity1: the primary person in a standard JSON form
 - entityN: alternate, not-yet-merged person records
 - entityX.{format}: the primary person (or an alternate) in an alternate format
-- META.entityX: link to intent; link(s) to gedcom permanames
-- IDENTITY.entityX: optional "derived-from", "supersedes", "superseded-by", "same-as", and "not-same-as" link attributes; also any arbitrary XFNs to other permanames
-- LICENSE.entityX: license for use of this person, copied from gedcom at import time, or from repo's LICENSE_DEFAULT at non-import-creation time
+- entityX.META: link to intent; link(s) to gedcom permanames
+- entityX.IDENTITY: optional "supersedes", "superseded-by", "derived-from", "same-as", and "not-same-as" link attributes; also any arbitrary XFNs to other permanames
+- entityX.LICENSE: license for use of this person, copied from gedcom at import time, or from repo's LICENSE_DEFAULT at non-import-creation time
 - commits on a person can easily be merged/fast-forwarded if history is shared and there are no textual conflicts
 - commits on two persons of the same permaname that do NOT share history can undergo person merge
 - merge commits set "supersedes" and "superseded-by" link attributes to allow post-merge traceability
-- merge comes in at least 5 flavors:
-  1) [import] full record reconciliation + history linkage at once (not recommended because intent is lost)
-  2) [import] alternate record storage + history linkage (recommended for automated import processes)
-  3) [post-import] "comes before/comes after" record replacement strategy for dealing with record reconciliation
-  4) [post-import] "pick correct values" record reconciliation strategy for dealing with partial truth from multiple sources
-  5) [post-import] "disambiguation" record reconciliation strategy for separating records that are NOT the same person (sets the "derived-from" attribute)
 - merging of META takes a "most recent intent / union" approach
 - merging of IDENTITY takes a "union with conflict detection & manual resolution" approach
 - merging of LICENSE takes the more restrictive license by default
 
-refs/local/persons/{permaname}:
+refs/local/persons/{permanames}:
 - non-public person record, behaves like person in every other respect
 - typically a person record should exist under EITHER refs/local OR refs/heads
 - if both exist, the refs/heads record is used exclusively
 
-refs/heads/families/{permaname}:
+refs/heads/families/{permanames}:
 - entity1: the primary family in a standard JSON form
 - entityN: alternate, not-yet-merged family records
 - entityX.{format}: the primary person (or an alternate) in an alternate format
-- META.entityX: link to intent; link(s) to gedcom permanames
-- IDENTITY.entityX: optional "prior-family", "derived-from", "supersedes", "superseded-by", "same-as", and "not-same-as" link attributes; also any arbitrary XFNs to other permanames
-- LICENSE.entityX: license for use of this person, copied from gedcom at import time, or from repo's LICENSE_DEFAULT at non-import-creation time
+- entityX.META: link to intent; link(s) to gedcom permanames
+- entityX.IDENTITY: optional "prior-family", "derived-from", "supersedes", "superseded-by", "same-as", and "not-same-as" link attributes; also any arbitrary XFNs to other permanames
+- entityX.LICENSE: license for use of this person, copied from gedcom at import time, or from repo's LICENSE_DEFAULT at non-import-creation time
 - commits on a family can easily be merged/fast-forwarded if history is shared and there are no textual conflicts
 - commits on two families of the same permaname that do NOT share history can undergo family merge
-- merge comes in as many flavors as person merge (see person, draw corollaries for family)
 - merging of META takes a "most recent intent / union" approach
 - merging of IDENTITY takes a "union with conflict detection & manual resolution" approach
 - merging of LICENSE takes the more restrictive license by default
 
-refs/local/families/{permaname}:
+refs/local/families/{permanames}:
 - non-public family record, behaves like person in every other respect
 - typically a family record should exist under EITHER refs/local OR refs/heads
 - if both exist, the refs/heads record is used exclusively

@@ -9,10 +9,13 @@ module GitGed
 
     include Subcommands
 
+    # patch until subcommand 1.0.7 comes out
+    attr_accessor :appname
+
     def initialize
       @options = {}
-      appname = File.basename($0)
 
+      self.appname = "git ged"
       global_options do |opts|
         opts.banner = "Usage: #{appname} [options] [subcommand [options]]"
         opts.separator ""
@@ -28,6 +31,7 @@ module GitGed
         opts.banner = "Usage: #{appname} init [-m msg] [repo]"
         opts.description = "Initializes a new git-ged repo"
         opts.separator ""
+        opts.separator "Options:"
         opts.on "-m MESSAGE", "--message MESSAGE" do |msg|
           @options[:message] = msg
         end
@@ -36,7 +40,11 @@ module GitGed
 
     def run
       cmd = opt_parse()
-      Repo.new.send cmd, ARGV, @options
+      if cmd
+        Repo.new.send cmd, ARGV, @options
+      else
+        puts global_options { |opts| opts }
+      end
     end
 
   end

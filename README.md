@@ -1,9 +1,9 @@
 git-ged
 =======
 
-Status: experimental
-Author: John Sumsion
-Inspriation: Git, Tim Shadel
+* Status: experimental
+* Author: John Sumsion
+* Inspiration: Git, Tim Shadel
 
 GEDCOM plugin for Git.  As a `git` subcommand, git-ged lets you import and
 manage GEDCOM files in a versioned, shareable way in a Git repository.
@@ -39,7 +39,7 @@ Easiest install is via RubyGems:
 
 ## Source
 
-Grit's Git repo is available on GitHub, which can be browsed at:
+Git-ged's Git repo is available on GitHub, which can be browsed at:
 
     https://github.com/jsumsiong/git-ged
 
@@ -57,7 +57,7 @@ You will need these gems to get tests to pass:
 
 ### Contributing
 
-If you'd like to hack on Grit, follow these instructions. To get all of the
+If you'd like to hack on git-ged, follow these instructions. To get all of the
 dependencies, install the gem first.
 
 1. Fork the project to your own account

@@ -41,18 +41,8 @@ Gem::Specification.new do |s|
     git-ged.gemspec
     layout.txt
     lib/git-ged.rb
-    lib/git-ged/attach_cmd.rb
-    lib/git-ged/clone_cmd.rb
-    lib/git-ged/cmd_support.rb
-    lib/git-ged/commit_cmd.rb
-    lib/git-ged/fetch_cmd.rb
-    lib/git-ged/help_cmd.rb
-    lib/git-ged/import_cmd.rb
-    lib/git-ged/ingest_cmd.rb
-    lib/git-ged/init_cmd.rb
-    lib/git-ged/push_cmd.rb
+    lib/git-ged/init.rb
     lib/git-ged/repo.rb
-    lib/git-ged/workspace_cmd.rb
   ]
   # = MANIFEST =
 

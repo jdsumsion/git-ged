@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.name              = 'git-ged'
   s.version           = GitGed::VERSION
   s.date              = '2012-01-05'
-  #s.rubyforge_project = 'git-ged'
 
   s.summary     = "GEDCOM plugin for Git"
   s.description = "git-ged is a Ruby toolset for managing genealogical data (GEDCOM) inside a Git repository."

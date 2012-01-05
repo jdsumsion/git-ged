@@ -2,19 +2,24 @@ GIT-GED CONCEPTS
 ================
 
 1) Git-ged commands
+[repo-level]
 - Init: populates refs/heads/{master,content,intent} with README, LICENSE_DEFAULT, etc. as specified by user
 - Clone: same as git clone
 - Attach: same as git remote add, except that it allows the user to define the set of permanames of interest in the remote repo
 - Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
 - Push: same as git push, except that only permanames that the remote repo has are updated
+[entity-state]
+- Intent: captures one-line user intent (separate from commit message)
+- Ingest: populates refs/local/gedcoms/{permaname(s)} with a raw gedcom, adding new gedN files for permaname collisions
+- Filter: performs living filter and populates refs/heads/gedcoms/{permaname}
+- Import: creates any new persons/families and records import flag & new person/family permaname+state links in gedX.IMPORT
+[interactive-use]
 - Workspace: (subcommands: checkout, update, reset)
   - checkout: grabs every specified person/family/gedcom permaname and puts it under the path repo/[persons|families|gedcoms]/{permaname} in a transient commit
   - update: grabs the head of every specified person/family/gedcom permaname and puts it under a new refs/heads/workspace commit
   - reset: warns if un-git-ged-committed refs/heads/workspace history, then nukes it and recreates a refs/heads/workspace commit with the same permanames as it had before
-- Intent: captures user intent (separate from commit message)
+- Resolve: deals with multiple-record histories in a smart way (gedcoms/persons/families)
 - Commit: creates commits on every separate permaname that has changed, using current intent as default commit subject plus details of all entities that changed
-- Ingest: populates refs/local/gedcoms/{permaname(s)} with a raw gedcom
-- Import: performs living filter and populates refs/heads/gedcoms/{permaname}, along with creating any new persons/families
 
 2) Data Licenses
 - Data license defaults to Creative Commons Attribution-ShareAlike 3.0 Unported
@@ -27,12 +32,10 @@ GIT-GED CONCEPTS
 - all ingested gedcoms are stored verbatim under a "refs/local/gedcoms/{permaname}" ref
 - all imported, living-filtered gedcoms are stored under a "refs/heads/gedcoms/{permaname}" ref
 - there are multiple permanames for a gedcom:
-  - FILE & SUBM name[/email]
-  - FILE & DATE
-  - source path & SUBM name
-  - canonical hash of all person _UUIDs
-- permaname for gedcom is the sha256 hash of the string "<email> <path/filename>"
-- subsequent imports of the same gedcom create new commits under any permaname ref
+  - primary permaname for gedcom is the sha256 hash of "FILE & SUBM name[/email]"
+  - alternate permaname for gedcom is the sha256 hash of "FILE & DATE"
+  - alternate permaname for gedcom is the sha256 hash of "source path & SUBM name"
+  - alternate permaname for gedcom is the sha256 hash of all person _UUIDs, sorted alphanumerically
 - keep your email, paths & filenames consistent to maximize permaname collisions
 - copies the repo's LICENSE_DEFAULT unless overridden by the user at ingest time
 
@@ -141,6 +144,9 @@ refs/heads/intent (fetchable, but non-mergeable):
 - able to be as fine-grained and meticulous as the user wants to be, while allowing the user
   the convenience of keeping the same intent over several small actions moving toward a large-time-scale goal
 - able to generate a feed of intents from here
+
+refs/heads/workspace (fetchable, but non-mergeable):
+- non-history-preserving workspace tree for pulling a subset of records into a filesystem for edit
 
 refs/heads/gedcoms/{permanames}:
 - ged1: the living-filtered gedcom file renamed to a standard filename

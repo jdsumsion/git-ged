@@ -105,8 +105,9 @@ GIT-GED CONCEPTS
 - each of the following link attributes refers to another record via permaname+state reference
 - "supersedes" indicates that a person (or family) is a full, identical replacement for another (used to be able to react to remote merges)
 - "superseded-by" indicates that a static, not-to-be-further-edited  person (or family) is left behind after having been merged into the canonical record (used to detect conflicts between local edits & remote merge or vice versa)
-- "derived-from" indicates a clone-and-mutate to disambiguate a fully-merged record that represents two distinct historical persons or families (used to document manual record reconstruction efforts)
 - "same-as" indicates a more-tentative-than-merge attempt at establishing identity to allow for disparate efforts to proceed before attempting a full merge
+- "disambiguated-by" indicates a forward-reference from a person/family that has no useful future except for providing opportunity for fruitful permaname collision & disambiguation hints to users on subsequent imports
+- "derived-from" indicates a record that took a significant amount of data from another record, from which an identity was extracted
 - "not-same-as" indicates a definitive statement that one person (or family) is NOT the same as another (used when extracting a half-merged entity that collided on a permaname)
 - "prior-family" indicates that a family has many of the same members of a prior family, but temporal household dissolution & recomposition require two different families to be tracked (allows for "current family" computations based on a directed graph of prior-family edges)
 

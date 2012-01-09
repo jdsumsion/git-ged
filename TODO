@@ -4,13 +4,18 @@ Structure
 - commands
 
 Bootstrapping
-- integrate OptionParser (stdlib) and subcommand (gem) into git-ged commands
-- patch gem-man to read README{,.md} in lieu of any explicit manpage (gem man rib)
+-------------
+- use pickled_optparse for required options
+- move init's optparse initialization into init.rb
 
+- use pwd and arg in init.rb to get full pathname to new git-ged repo and print in output
+- make init.rb use grit to initialize (note: .../.git is what it expects for non-bare)
+- add --bare option
+
+- move layout.txt down under lib/git-ged/data (leaving a symlink behind at root)
 - create licenses subdir with data licenses by short-name
 - create templates area that refs/heads/master can be populated from during "git ged init"
-- create git-ged command that invokes git-ged-*
-- create lib/git-ged/init.rb that invokes git init + template population (normal or bare)
+
 - create lib/git-ged/ingest.rb that copies a GEDCOM in and assigns permaname (refs/local/gedcoms)
 - ingest one of Hannah's small GEDCOMs
 - ingest one of Hannah's full GEDCOMs
@@ -29,6 +34,9 @@ Bootstrapping
   - pick default person/family permaname generation logic based on whether the _UUIDs match up
   - create local/gedcoms history based on 
 
+Ideas
+-----
+- patch gem-man to read README{,.md} in lieu of any explicit manpage (gem man rib)
 
 GUI:
   shoes

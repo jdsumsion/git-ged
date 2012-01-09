@@ -22,7 +22,6 @@ module GitGed
         opts.separator "Global options are:"
         opts.on("-v", "--[no-]verbose", "Show git-ged & grit debug") do |v|
           GitGed.debug = v
-          GitGed.grit_debug = v
         end
       end
       add_help_option

@@ -33,21 +33,46 @@ module GitGed
 
     attr_accessor :debug
 
-    def grit_debug= onoff
+    def debug= onoff
       Grit.debug = onoff
+      @debug = onoff
+      @logger.level = onoff ? ::Logger::DEBUG : ::Logger::INFO
     end
 
     # The standard +logger+ for debugging git-ged calls - this defaults to a plain STDOUT logger
     attr_accessor :logger
 
-    def log(str)
-      logger.debug { str }
+    def log(str, &block)
+      if block_given?
+        logger.debug &block
+      else
+        logger.debug str
+      end
+    end
+
+    def message(str)
+      logger.info str
+    end
+
+    private
+
+    def new_logger
+      logger = ::Logger.new STDOUT
+      default_formatter = ::Logger::Formatter.new
+      logger.formatter = lambda do |severity, datetime, progname, msg|
+        if severity == "DEBUG"
+          default_formatter.call(severity, datetime, progname, msg)
+        else
+          msg
+        end
+      end
+      logger
     end
   end
 
-  self.debug = false
-  self.grit_debug = false
+  @logger ||= new_logger
 
-  @logger ||= ::Logger.new(STDOUT)
+  # turn debug logging off by default
+  self.debug = false
 
 end

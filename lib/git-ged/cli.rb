@@ -11,6 +11,9 @@ module GitGed
 
     # patch until subcommand 1.0.7 comes out
     attr_accessor :appname
+    def print_actions
+      super.sub(/See '.* help COMMAND'/, "See '#{appname} help COMMAND'")
+    end
 
     def initialize
       @options = {}

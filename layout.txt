@@ -9,7 +9,7 @@ GIT-GED CONCEPTS
 - Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
 - Push: same as git push, except that only permanames that the remote repo has are updated
 [entity-state]
-- Intent: captures one-line user intent (separate from commit message)
+- Intent: captures one-line user intent to capture large-scale project (separate from commit message on a single entity)
 - Ingest: populates refs/local/gedcoms/{permaname(s)} with a raw gedcom, adding new gedN files for permaname collisions
 - Filter: performs living filter and populates refs/heads/gedcoms/{permaname}
 - Import: creates any new persons/families and records import flag & new person/family permaname+state links in gedX.IMPORT
@@ -124,7 +124,7 @@ GIT-GED REFS LAYOUT
 
 refs/heads/*:
 - stuff that can be cloned/fetched
-refs/heads/{gedcoms,persons,families}/*
+refs/heads/{gedcoms,persons,families/intents}/*
 - data that can be cloned/fetched/forked piecemeal
 refs/local/*:
 - dispensible stuff that is used for local import actions (not needed for collaboration)
@@ -136,18 +136,22 @@ refs/heads/master (fetchable, but non-mergeable):
 
 refs/heads/content (fetchable, but non-mergeable):
 - META: last version of git-ged that wrote
-- INTENT: link to last intent
-- ROOTS: links to various person roots
-- ENTITIES: list of gedcom/person/family permaname+state links, may end up needing to be sharded for very large repos
 - LICENSE_DEFAULT: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
-- [non-versioned] CHANGELOG: contains up to last 100 edits performed, updated by git-ged commit
+- ROOTS: links to various person permaname roots, to start tree navigation from
+- ENTITIES: list of gedcom/person/family/intent permaname+state links, may end up needing to be sharded for very large repos
+- INTENTS: list of last N intents & date & author
+- CHANGELOG: contains up to last 100 edits performed, including list of entities changed, updated by git-ged commit
+- LIMITS: maximum number of intents, etc.
 
-refs/heads/intent (fetchable, but non-mergeable):
-- INTENT: stores the user's identity, single-line intent message, and date in the tree itself to capture "why"
+refs/heads/intents/master (fetchable, but non-mergeable):
+- INTENT: stores the user's git identity, date, and, single-line 140-char intent message in the tree itself to capture "why"
 - MUST exist: if no intent is explicitly stored, init/import/edit must stub one in that describes the largest-scope action being taken
-- able to be as fine-grained and meticulous as the user wants to be, while allowing the user
-  the convenience of keeping the same intent over several small actions moving toward a large-time-scale goal
+- able to cherry-pick an intent from some other user to show you're working toward the same goal as someone else
 - able to generate a feed of intents from here
+- capped at 100 or so max commits (large limit)
+
+refs/heads/intents/{permanames}:
+- selective intents used to document why a certain change is made (linked from entities at commit)
 
 refs/heads/workspace (fetchable, but non-mergeable):
 - non-history-preserving workspace tree for pulling a subset of records into a filesystem for edit

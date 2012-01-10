@@ -12,14 +12,15 @@ Bootstrapping
 - make init.rb use grit to initialize (note: .../.git is what it expects for non-bare)
 - add --bare option
 
-- move layout.txt down under lib/git-ged/data (leaving a symlink behind at root)
-- create licenses subdir with data licenses by short-name
-- create templates area that refs/heads/master can be populated from during "git ged init"
+- move layout.txt => LAYOUT down under lib/git-ged/data (leaving a symlink behind at root)
+- create data/licenses subdir with licenses by short-name
+- populate LAYOUT under refs/heads/master during "init"
+- add -l --license option to "init" that populates DEFAULT_LICENSE under refs/heads/master
 
 - create lib/git-ged/ingest.rb that copies a GEDCOM in and assigns permaname (refs/local/gedcoms)
+- copy DEFAULT_LICENSE => ged1.LICENSE or allow -l --license option to specify
 - ingest one of Hannah's small GEDCOMs
 - ingest one of Hannah's full GEDCOMs
-- get rib-git-ged plugin working
 
 - create living filter pipe for filtering GEDCOMs
 - create lib/git-ged/import.rb that copies a GEDCOM from refs/{local=>heads}/gedcoms with living filter
@@ -34,9 +35,15 @@ Bootstrapping
   - pick default person/family permaname generation logic based on whether the _UUIDs match up
   - create local/gedcoms history based on 
 
+- allow "init" to reinitialize an already-initialized repo and copy new DEFAULT_LICENSE/new LAYOUT
+
+- pull living calculations and hash calculations out into json-select code (semver) under refs/heads/code
+- put code version (semver + sha) into each entity on import/commit where a function was used (gedcom, person, family)
+
 Ideas
 -----
 - patch gem-man to read README{,.md} in lieu of any explicit manpage (gem man rib)
+- get rib-git-ged plugin working
 
 GUI:
   shoes

@@ -123,13 +123,16 @@ GIT-GED REFS LAYOUT
 ===================
 
 refs/heads/*:
-- stuff that can be cloned/forked
+- stuff that can be cloned/fetched
+refs/heads/{gedcoms,persons,families}/*
+- data that can be cloned/fetched/forked piecemeal
 refs/local/*:
 - dispensible stuff that is used for local import actions (not needed for collaboration)
 - hidden stuff that should not be published on a clone/fork
 
 refs/heads/master (fetchable, but non-mergeable):
 - README: simple documentation of git-ged, with pointer to software to parse/use
+- LAYOUT: this file containing details of git-ged structure
 
 refs/heads/content (fetchable, but non-mergeable):
 - META: last version of git-ged that wrote

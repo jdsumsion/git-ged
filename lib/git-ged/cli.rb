@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 
 require 'git-ged'
-require 'optparse'
+require 'picled_optparse'
 require 'subcommand'
 
 module GitGed
@@ -30,12 +30,12 @@ module GitGed
       add_help_option
 
       command :init do |opts|
-        opts.banner = "Usage: #{appname} init [-m msg] [repo]"
+        opts.banner = "Usage: #{appname} init -m msg [repo]"
         opts.description = "Initializes a new git-ged repo"
         opts.separator ""
         opts.separator "Options:"
-        opts.on "-m MESSAGE", "--message MESSAGE" do |msg|
-          @options[:message] = msg
+        opts.on "-m INTENT", "--message INTENT" do |intent|
+          @options[:intent] = intent
         end
       end
     end

@@ -3,7 +3,7 @@ GIT-GED CONCEPTS
 
 1) Git-ged commands
 [repo-level]
-- Init: populates refs/heads/{master,content,intent} with README, LICENSE_DEFAULT, etc. as specified by user
+- Init: populates refs/heads/{master,content,intent/master} with README, LICENSE_DEFAULT, etc. as specified by user
 - Clone: same as git clone
 - Attach: same as git remote add, except that it allows the user to define the set of permanames of interest in the remote repo
 - Fetch: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
@@ -13,12 +13,14 @@ GIT-GED CONCEPTS
 - Ingest: populates refs/local/gedcoms/{permaname(s)} with a raw gedcom, adding new gedN files for permaname collisions
 - Filter: performs living filter and populates refs/heads/gedcoms/{permaname}
 - Import: creates any new persons/families and records import flag & new person/family permaname+state links in gedX.IMPORT
+- Resolve: deals with multiple-record histories in a smart way (gedcoms/persons/families)
+- Owner: establishes identity of the owner of the repo in refs/heads/content:/OWNER,
+  adds person for the user and allows specification of 'mpmmp' ancestor links to deceased horizon
 [interactive-use]
 - Workspace: (subcommands: checkout, update, reset)
   - checkout: grabs every specified person/family/gedcom permaname and puts it under the path repo/[persons|families|gedcoms]/{permaname} in a transient commit
   - update: grabs the head of every specified person/family/gedcom permaname and puts it under a new refs/heads/workspace commit
   - reset: warns if un-git-ged-committed refs/heads/workspace history, then nukes it and recreates a refs/heads/workspace commit with the same permanames as it had before
-- Resolve: deals with multiple-record histories in a smart way (gedcoms/persons/families)
 - Commit: creates commits on every separate permaname that has changed, using current intent as default commit subject plus details of all entities that changed
 
 2) Data Licenses
@@ -136,6 +138,7 @@ refs/heads/master (fetchable, but non-mergeable):
 
 refs/heads/content (fetchable, but non-mergeable):
 - META: last version of git-ged that wrote
+- OWNER: the identity of the owner of this repo + OpenID URLs, blog URLs and/or email(s)
 - LICENSE_DEFAULT: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
 - ROOTS: links to various person permaname roots, to start tree navigation from
 - ENTITIES: list of gedcom/person/family/intent permaname+state links, may end up needing to be sharded for very large repos
@@ -165,8 +168,8 @@ refs/heads/gedcoms/{permanames}:
 
 refs/local/gedcoms/{permanames}:
 - *may* contain living data, populated without filtering by "ingest"
-- ged1.ged: the raw gedcom file renamed to a standard filename
-- gedN.ged: the raw gedcom file renamed to a standard filename
+- ged1: the raw gedcom file renamed to a standard filename
+- gedN: the raw gedcom file renamed to a standard filename
 - pre-existing permanames get forwarded up to the new tree (collisions, yay!)
 - new permanames get created, non-colliding permanames don't get forwarded (gc'd by some other mechanism)
 - if the gedcom contains no living data, "import" can delete the refs/local refs

@@ -56,10 +56,10 @@ GIT-GED CONCEPTS
   - import is responsible for initially segmenting living vs. deceased, but after import the app is responsible for calculating living after edit and moving the record if necessary
   - the same living check & segmentation logic that import uses will be available on-demand for apps to use after edit
   - when a deceased record is made living, the deceased record's permaname gets a new commit that marks it as no-longer-visible (so that on subsequent fetch, other repositories can delete their records)
-- includes optional "supersedes", "superseded-by", "derived-from", "same-as", and "not-same-as" link attributes
-  - see 
-  - the "derived-from", "supersedes", and "superseded-by" link attributes allow for proper history-aware
+- includes optional "supersedes", "superseded-by", "derived-from", "descendant-of", "same-as", and "not-same-as" link attributes
+  - the "supersedes", "superseded-by", and "derived-from" link attributes allow for proper history-aware
     linkage across permanames for tracing merge or other complicated person record derivation
+  - the "descendant-of" attribute is for attaching non-descript living persons to their deceased horizon via "mpmmp" links
   - the "same-as" attribute is a loose identity link to an alternate history of a person
     determined to be the same historical person, it is a hint that a merge or other record derivation may be useful in the future
   - if the "not-same-as" attribute refers to a disconnected history of a *different* person under the same permaname,

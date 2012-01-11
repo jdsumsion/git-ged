@@ -4,7 +4,7 @@ require 'optparse'
 class Foo
   extend Commandable
 
-  # the :default param is optional, and can only be on one method
+  # :default is optional, and can only be on one method
   command "hello", :default
   def hello(world="world")  # the default value is expressed inline in real ruby
     puts "hello #{world.inspect}"
@@ -39,4 +39,5 @@ class FriendlyError < RuntimeError
 end
 
 Commandable.color_output = false
-Commandable.execute ARGV, silent: true
+Commandable.single_command_only = true
+Commandable.execute ARGV, :silent

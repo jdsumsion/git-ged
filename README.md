@@ -9,19 +9,25 @@ GEDCOM plugin for Git.  As a `git` subcommand, git-ged lets you import and
 manage GEDCOM files in a versioned, shareable way in a Git repository.
 
 It is also possible to attach to other repositories and fetch related
-genealogy from others who have imported it into their own repository.
+genealogy data from others who have imported it into their own repository.
 
 As a library, git-ged lets you write programs that communicate genealogical
 data in the git-ged repository layout.
 
 As a repository implementation, git-ged also defines a repository
 specification that, if adhered to by alternate implementations will render
-all implementations data-compatible with each other.
+all implementations to share repositories with each other.
 
 The genealogical data format for persons and relationships is yet to be
 decided.  The first cut will be one that is largely one-to-one compatible
 with GEDCOM 5.5.  I fully expect to change the format before this
 solidifies, and I'll use whatever is the commonly-accepted format.
+
+NOTE: Although I started git-ged and have worked on it while being employed
+by FamilySearch, this project is not endorsed and is not supported in any
+way by FamilySearch.  I work on it outside of work hours, and do not use
+internal FamilySearch servers or data privileges.  It is a personal endeavor
+to enrich the genealogy data sharing ecosystem.
 
 
 ## Requirements

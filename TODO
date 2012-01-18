@@ -14,7 +14,7 @@ Bootstrapping
 - add --bare option
 
 - move layout.txt => LAYOUT down under lib/git-ged/data (leaving a symlink behind at root)
-- create data/licenses subdir with licenses by short-name
+- create data/licenses subdir with licenses by short-name (see git-bup's SIGNED-OFF-BY for EULA ideas)
 - populate LAYOUT under refs/heads/master during "init"
 - add -l --license option to "init" that populates DEFAULT_LICENSE under refs/heads/master
 

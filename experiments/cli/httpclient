@@ -3,6 +3,8 @@ require 'cli'
 require 'httpclient'
 
 options = CLI.new do
+    switch :version, short: :v, description: "show version"
+    switch :debug,   short: :d, description: "show debug output"
     option :server, :description => 'server address', :default => 'www.google.com'
     option :port,   :description => 'server port', :cast => Integer, :default => 80
     argument :url,  :description => 'URL to GET or POST to if arguments are given'

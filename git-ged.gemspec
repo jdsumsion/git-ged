@@ -23,8 +23,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w[README.md LICENSE LICENSE.grit TODO layout.txt]
 
   s.add_dependency('grit', "~> 2.4.1")
-  s.add_dependency('pickled_optparse', "~> 0.1.1")
-  s.add_dependency('subcommand', "~> 1.0.6")
+  s.add_dependency('cli', "~> 1.1.0")
 
   s.add_development_dependency('mocha')
 

@@ -5,8 +5,8 @@ Structure
 
 Bootstrapping
 -------------
-- use commandable for subcommand running
-- hook up --verbose option => GitGed.debug
+- use cli for subcommand running
+- hook up global --verbose option => GitGed.debug
 - move init's optparse initialization into init.rb
 
 - use pwd and arg in init.rb to get full pathname to new git-ged repo and print in output

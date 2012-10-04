@@ -118,23 +118,23 @@
 
 Here are the general patterns of things that live under refs/:
 
-- refs/heads/\*:
+1. refs/heads/\*:
     - stuff that can be cloned/fetched
 <br>
-- refs/heads/{gedcoms,persons,families/intents}/\*
+2. refs/heads/{gedcoms,persons,families/intents}/\*
     - data that can be cloned/fetched/forked piecemeal
 <br>
-- refs/local/\*:
+3. refs/local/\*:
     - dispensible stuff that is used for local import actions (not needed for collaboration)
     - hidden stuff that should not be published on a clone/fork
 <br>
-Here are specific details about each kind of ref:
 
-- refs/heads/master (fetchable, but non-mergeable):
+Here are specific details about each kind of ref:
+1. refs/heads/master (fetchable, but non-mergeable):
     - **README**: simple documentation of git-ged, with pointer to software to parse/use
     - **LAYOUT**: this file containing details of git-ged structure
 <br>
-- refs/heads/content (fetchable, but non-mergeable):
+2. refs/heads/content (fetchable, but non-mergeable):
     - **META**: last version of git-ged that wrote
     - **OWNER**: the identity of the owner of this repo + OpenID URLs, blog URLs and/or email(s)
     - **LICENSE_DEFAULT**: default license for any new records added or imported into to this repository, defaults to Creative Commons Share-alike
@@ -144,27 +144,27 @@ Here are specific details about each kind of ref:
     - **CHANGELOG**: contains up to last 100 edits performed, including list of entities changed, updated by git-ged commit
     - **LIMITS**: maximum number of intents, etc.
 <br>
-- refs/heads/intents/master (fetchable, but non-mergeable):
+3. refs/heads/intents/master (fetchable, but non-mergeable):
     - **INTENT**: stores the user's git identity, date, and, single-line 140-char intent message in the tree itself to capture "why"
     - MUST exist: if no intent is explicitly stored, init/import/edit must stub one in that describes the largest-scope action being taken
     - able to cherry-pick an intent from some other user to show you're working toward the same goal as someone else
     - able to generate a feed of intents from here
     - capped at 100 or so max commits (large limit)
 <br>
-- refs/heads/intents/{permanames}:
+4. refs/heads/intents/{permanames}:
     - selective intents used to document why a certain change is made (linked from entities at commit)
 <br>
-- refs/heads/workspace (fetchable, but non-mergeable):
+5. refs/heads/workspace (fetchable, but non-mergeable):
     - non-history-preserving workspace tree for pulling a subset of records into a filesystem for edit
 <br>
-- refs/heads/gedcoms/{permanames}:
+6. refs/heads/gedcoms/{permanames}:
     - **ged1**: the living-filtered gedcom file renamed to a standard filename
     - **gedN**: the living-filtered gedcom file renamed to a standard filename
     - contains NO living data, as a result of "ingest" followed by "import"
     - **gedX.META**: link to intent; original file name & path; where/who the file came from; all permanames this gedcom was stored under (by permaname kind)
     - **gedX.LICENSE**: license for use of this gedcom as a whole, copied to individual persons/families at import time
 <br>
-- refs/local/gedcoms/{permanames}:
+7. refs/local/gedcoms/{permanames}:
     - _may_ contain living data, populated without filtering by "ingest"
     - **ged1**: the raw gedcom file renamed to a standard filename
     - **gedN**: the raw gedcom file renamed to a standard filename
@@ -174,7 +174,7 @@ Here are specific details about each kind of ref:
     - can coexist with refs/heads/gedcoms/{permaname} for a while as documentation of exactly what got imported
     - fetch/clone/fork does NOT include the original gedcom, just the "post-import" one (because only refs/heads comes along)
 <br>
-- refs/heads/persons/{permanames}:
+8. refs/heads/persons/{permanames}:
     - **entity1**: the primary person in a standard JSON form
     - **entityN**: alternate, not-yet-merged person records
     - **entityX.{format}**: the primary person (or an alternate) in an alternate format
@@ -188,12 +188,12 @@ Here are specific details about each kind of ref:
     - merging of IDENTITY takes a "union with conflict detection & manual resolution" approach
     - merging of LICENSE takes the more restrictive license by default
 <br>
-- refs/local/persons/{permanames}:
+9. refs/local/persons/{permanames}:
     - non-public person record, behaves like person in every other respect
     - typically a person record should exist under EITHER refs/local OR refs/heads
     - if both exist, the refs/heads record is used exclusively
 <br>
-- refs/heads/families/{permanames}:
+10. refs/heads/families/{permanames}:
     - **entity1**: the primary family in a standard JSON form
     - **entityN**: alternate, not-yet-merged family records
     - **entityX.{format}**: the primary person (or an alternate) in an alternate format
@@ -206,7 +206,7 @@ Here are specific details about each kind of ref:
     - merging of IDENTITY takes a "union with conflict detection & manual resolution" approach
     - merging of LICENSE takes the more restrictive license by default
 <br>
-- refs/local/families/{permanames}:
+11. refs/local/families/{permanames}:
     - non-public family record, behaves like family in every other respect
     - typically a family record should exist under EITHER refs/local OR refs/heads
     - if both exist, the refs/heads record is used exclusively

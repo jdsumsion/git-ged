@@ -1,14 +1,12 @@
 ### GIT-GED CONCEPTS
 
 1. Git-ged commands
-
     - repo-level commands:
         - _init_: populates refs/heads/{master,content,intent/master} with README, LICENSE_DEFAULT, etc. as specified by user
         - _clone_: same as git clone
         - _attach_: same as git remote add, except that it allows the user to define the set of permanames of interest in the remote repo
         - _fetch_: same as git fetch, except that only permanames that the user currently has are fetched (along with refs/heads/master)
         - _push_: same as git push, except that only permanames that the remote repo has are updated
-
     - entity- and state-level commands:
         - _intent_: captures one-line user intent to capture large-scale project (separate from commit message on a single entity)
         - _ingest_: populates refs/local/gedcoms/{permaname(s)} with a raw gedcom, adding new gedN files for permaname collisions
@@ -16,21 +14,20 @@
         - _import_: creates any new persons/families and records import flag & new person/family permaname+state links in gedX.IMPORT
         - _resolve_: deals with multiple-record histories in a smart way (gedcoms/persons/families)
         - _owner_: establishes identity of the owner of the repo in refs/heads/content:/OWNER, adds person for the user and allows specification of 'mpmmp' ancestor links to deceased horizon
-
     - interactive-use commands:
         - _workspace_: (subcommands: checkout, update, reset)
             - _checkout_: grabs every specified person/family/gedcom permaname and puts it under the path repo/[persons|families|gedcoms]/{permaname} in a transient commit
             - _update_: grabs the head of every specified person/family/gedcom permaname and puts it under a new refs/heads/workspace commit
             - _reset_: warns if un-git-ged-committed refs/heads/workspace history, then nukes it and recreates a refs/heads/workspace commit with the same permanames as it had before
         - _commit_: creates commits on every separate permaname that has changed, using current intent as default commit subject plus details of all entities that changed
-
+<br>
 2. Data Licenses
     - Data license defaults to Creative Commons Attribution-ShareAlike 3.0 Unported
     - Users can update license at repo/gedcom/record level
     - Other common license options are easily specifiable
         - Other Creative Commons options: CC-BY-3.0, CC-BY-NC-3.0, CC-BY-NC-SA-3.0, CC0-1.0
         - Open Data Commons options: ODC-PDDL-1.0, ODC-BY-1.0, ODC-ODBL-1.0
-
+<br>
 3. Gedcom
     - all ingested gedcoms are stored verbatim under a "refs/local/gedcoms/{permaname}" ref
     - all imported, living-filtered gedcoms are stored under a "refs/heads/gedcoms/{permaname}" ref
@@ -41,7 +38,7 @@
         - alternate permaname for gedcom is the sha256 hash of all person _UUIDs, sorted alphanumerically
     - keep your email, paths & filenames consistent to maximize permaname collisions
     - copies the repo's LICENSE\_DEFAULT unless overridden by the user at ingest time
-
+<br>
 4. Person
     - all imported persons are stored in a standard JSON format under a "refs/heads/persons/{permaname}" refs
     - there are **multiple** permanames for a person:
@@ -67,7 +64,7 @@
     - person merge decisions can be deferred by storing two person entities under the same permaname and letting the user make the before/after decision at a later time
     - multiple persons can be stored under the same permaname under 'entity1'..'entityN' blob names
     - copies the gedcom LICENSE if imported, copies the repo's LICENSE\_DEFAULT if a newly-created person
-
+<br>
 5. Family
     - direct represenation of the GEDCOM family concept
     - all imported families are stored in a standard JSON format under a "refs/heads/families/{permaname}" refs
@@ -86,11 +83,11 @@
     - family merge decisions can be deferred by storing two family entities under the same permaname and letting the user make the before/after decision at a later time
     - multiple families can be stored under the same permaname under 'entity1'..'entityN' blob names
     - copies the gedcom LICENSE if imported, copies the repo's LICENSE\_DEFAULT if a newly-created record
-
+<br>
 6. Link Attribute
     - link attributes always refer to BOTH primary permaname & state
     - link attributes are encoded similar to XFN to start
-
+<br>
 7. Merge Strategies
     - merge comes in at least 4 flavors:
         1. (import) alternate record storage + history linkage (recommended for automated import processes)
@@ -98,7 +95,7 @@
         3. (post-import) "pick correct values" record reconciliation strategy for dealing with partial truth from multiple sources (sets "derived-from" attribute(s))
         4. (post-import) "disambiguation" record reconciliation strategy for separating records that are NOT the same person (sets "not-same-as" attribute(s))
     - of course anyone can do anything they please to their records, but these strategies seem to deserve automation support
-
+<br>
 8. Record deriviation tracing
     - each of the following link attributes refers to another record via permaname+state reference
     - "supersedes" indicates that a person (or family) is a full, identical replacement for another (used to be able to react to remote merges)
@@ -108,14 +105,14 @@
     - "derived-from" indicates a record that took a significant amount of data from another record, from which an identity was extracted
     - "not-same-as" indicates a definitive statement that one person (or family) is NOT the same as another (used when extracting a half-merged entity that collided on a permaname)
     - "prior-family" indicates that a family has many of the same members of a prior family, but temporal household dissolution & recomposition require two different families to be tracked (allows for "current family" computations based on a directed graph of prior-family edges)
-
+<br>
 9. Deletion of Records
     - person/family/gedcom delete comes in three flavors:
         1. "deref": I no longer care to track or maintain this person, if anyone has this person cloned, let them continue to maintain the record
         2. "hide": I want the record gone on any repo that follows mine, if they fetch from me, MAKE their record go away, dead-to-living transition uses this mechanism
         3. "delete": I want the record gone on any repo that follows mine, if they fetch from me, SUGGEST that their record go away
     - "hide" and "delete" stubs hang around for a longish-but-limited amount of time, and there is a mechanism that automatically cleans them up every so often
-
+<br>
 
 ### GIT-GED REFS LAYOUT
 
@@ -123,20 +120,20 @@ Here are the general patterns of things that live under refs/:
 
 - refs/heads/\*:
     - stuff that can be cloned/fetched
-
+<br>
 - refs/heads/{gedcoms,persons,families/intents}/\*
     - data that can be cloned/fetched/forked piecemeal
-
+<br>
 - refs/local/\*:
     - dispensible stuff that is used for local import actions (not needed for collaboration)
     - hidden stuff that should not be published on a clone/fork
-
+<br>
 Here are specific details about each kind of ref:
 
 - refs/heads/master (fetchable, but non-mergeable):
     - **README**: simple documentation of git-ged, with pointer to software to parse/use
     - **LAYOUT**: this file containing details of git-ged structure
-
+<br>
 - refs/heads/content (fetchable, but non-mergeable):
     - **META**: last version of git-ged that wrote
     - **OWNER**: the identity of the owner of this repo + OpenID URLs, blog URLs and/or email(s)
@@ -146,27 +143,27 @@ Here are specific details about each kind of ref:
     - **INTENTS**: list of last N intents & date & author
     - **CHANGELOG**: contains up to last 100 edits performed, including list of entities changed, updated by git-ged commit
     - **LIMITS**: maximum number of intents, etc.
-
+<br>
 - refs/heads/intents/master (fetchable, but non-mergeable):
     - **INTENT**: stores the user's git identity, date, and, single-line 140-char intent message in the tree itself to capture "why"
     - MUST exist: if no intent is explicitly stored, init/import/edit must stub one in that describes the largest-scope action being taken
     - able to cherry-pick an intent from some other user to show you're working toward the same goal as someone else
     - able to generate a feed of intents from here
     - capped at 100 or so max commits (large limit)
-
+<br>
 - refs/heads/intents/{permanames}:
     - selective intents used to document why a certain change is made (linked from entities at commit)
-
+<br>
 - refs/heads/workspace (fetchable, but non-mergeable):
     - non-history-preserving workspace tree for pulling a subset of records into a filesystem for edit
-
+<br>
 - refs/heads/gedcoms/{permanames}:
     - **ged1**: the living-filtered gedcom file renamed to a standard filename
     - **gedN**: the living-filtered gedcom file renamed to a standard filename
     - contains NO living data, as a result of "ingest" followed by "import"
     - **gedX.META**: link to intent; original file name & path; where/who the file came from; all permanames this gedcom was stored under (by permaname kind)
     - **gedX.LICENSE**: license for use of this gedcom as a whole, copied to individual persons/families at import time
-
+<br>
 - refs/local/gedcoms/{permanames}:
     - _may_ contain living data, populated without filtering by "ingest"
     - **ged1**: the raw gedcom file renamed to a standard filename
@@ -176,7 +173,7 @@ Here are specific details about each kind of ref:
     - if the gedcom contains no living data, "import" can delete the refs/local refs
     - can coexist with refs/heads/gedcoms/{permaname} for a while as documentation of exactly what got imported
     - fetch/clone/fork does NOT include the original gedcom, just the "post-import" one (because only refs/heads comes along)
-
+<br>
 - refs/heads/persons/{permanames}:
     - **entity1**: the primary person in a standard JSON form
     - **entityN**: alternate, not-yet-merged person records
@@ -190,12 +187,12 @@ Here are specific details about each kind of ref:
     - merging of META takes a "most recent intent / union" approach
     - merging of IDENTITY takes a "union with conflict detection & manual resolution" approach
     - merging of LICENSE takes the more restrictive license by default
-
+<br>
 - refs/local/persons/{permanames}:
     - non-public person record, behaves like person in every other respect
     - typically a person record should exist under EITHER refs/local OR refs/heads
     - if both exist, the refs/heads record is used exclusively
-
+<br>
 - refs/heads/families/{permanames}:
     - **entity1**: the primary family in a standard JSON form
     - **entityN**: alternate, not-yet-merged family records
@@ -208,9 +205,9 @@ Here are specific details about each kind of ref:
     - merging of META takes a "most recent intent / union" approach
     - merging of IDENTITY takes a "union with conflict detection & manual resolution" approach
     - merging of LICENSE takes the more restrictive license by default
-
+<br>
 - refs/local/families/{permanames}:
     - non-public family record, behaves like family in every other respect
     - typically a family record should exist under EITHER refs/local OR refs/heads
     - if both exist, the refs/heads record is used exclusively
-
+<br>

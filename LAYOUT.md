@@ -130,6 +130,7 @@ Here are the general patterns of things that live under refs/:
 <br>
 
 Here are specific details about each kind of ref:
+
 1. refs/heads/master (fetchable, but non-mergeable):
     - **README**: simple documentation of git-ged, with pointer to software to parse/use
     - **LAYOUT**: this file containing details of git-ged structure

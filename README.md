@@ -41,8 +41,8 @@ to enrich the genealogy data sharing ecosystem.
 
 ## Requirements
 
-* git (http://git-scm.com) tested with 1.7.8
-* grit gem (https://github.com/mojombo/grit) tested with 2.4.1
+* git (http://git-scm.com) tested with 1.7.12.3
+* grit gem (https://github.com/mojombo/grit) tested with 2.5.0
 
 
 ## Install

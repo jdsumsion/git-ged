@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
 
   s.name              = 'git-ged'
   s.version           = GitGed::VERSION
-  s.date              = '2012-01-25'
+  s.date              = '2012-10-27'
 
   s.summary     = "GEDCOM plugin for Git"
   s.description = "git-ged is a Ruby toolset for managing genealogical data (GEDCOM) inside a Git repository."
@@ -22,8 +22,8 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   s.extra_rdoc_files = %w[README.md LICENSE LICENSE.grit TODO layout.txt]
 
-  s.add_dependency('grit', "~> 2.4.1")
-  s.add_dependency('cli', "~> 1.1.0")
+  s.add_dependency('grit', "~> 2.5.0")
+  s.add_dependency('cli', "~> 1.1.1")
 
   s.add_development_dependency('mocha')
 

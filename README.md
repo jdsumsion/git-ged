@@ -14,14 +14,19 @@ genealogy data from others who have imported it into their own repository.
 As a library, git-ged lets you write programs that communicate genealogical
 data in the git-ged repository layout.
 
-As a repository implementation, git-ged also defines a repository
-specification that, if adhered to by alternate implementations will render
-all implementations to share repositories with each other.
+As a repository implementation, git-ged also defines a [repository
+specification][LAYOUT] that, if adhered to by alternate implementations will
+allow all implementations to share repositories with each other.
 
-The genealogical data format for persons and relationships is yet to be
-decided.  The first cut will be one that is largely one-to-one compatible
-with GEDCOM 5.5.  I fully expect to change the format before this
-solidifies, and I'll use whatever is the commonly-accepted format.
+Options for data format that I can see:
+* [FOLG Gedcom][FOLG]
+* [GEDCOMX][]
+
+The initial goal is to be able to easily ingest GEDCOMs from the wild.
+
+Support for versioned media importing is not included in the first pass,
+although with projects like [git-annex][] a sharable media repository is
+potentially possible.
 
 NOTE: Although I started git-ged and have worked on it while being employed
 by FamilySearch, this project is not endorsed and is not supported in any
@@ -29,6 +34,10 @@ way by FamilySearch.  I work on it outside of work hours, and do not use
 internal FamilySearch servers or data privileges.  It is a personal endeavor
 to enrich the genealogy data sharing ecosystem.
 
+[LAYOUT]: https://github.com/jdsumsion/git-ged/blob/master/LAYOUT.md
+[FOLG]: https://github.com/DallanQ/Gedcom/wiki/UML-Diagrams
+[GEDCOMX]: http://www.gedcomx.org/Data-Model.html
+[git-annex]: http://git-annex.branchable.com/
 
 ## Requirements
 

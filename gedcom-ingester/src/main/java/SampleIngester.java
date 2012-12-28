@@ -1,3 +1,8 @@
+import java.io.IOException;
+
+import org.folg.gedcom.tools.Gedcom2Json;
+import org.xml.sax.SAXParseException;
+
 /**
  * Takes gedcom files on command line and at least parses them.
  *
@@ -9,9 +14,10 @@
  */
 public class SampleIngester {
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws SAXParseException, IOException {
     for (String arg : args) {
       System.out.println("parsing: " + arg);
+      Gedcom2Json.main(new String[]{"-i", arg, "-o", arg.replaceAll("\\.ged", ".json")});
     }
   }
 }

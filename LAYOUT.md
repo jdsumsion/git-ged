@@ -118,13 +118,13 @@
 
 Here are the general patterns of things that live under `refs/`:
 
-1. `refs/heads/\*`:
+1. `refs/heads/*`:
     - stuff that can be cloned/fetched
 <br>
-2. `refs/heads/{gedcoms,persons,families/intents}/\*`:
+2. `refs/heads/{gedcoms,persons,families/intents}/*`:
     - data that can be cloned/fetched/forked piecemeal
 <br>
-3. `refs/local/\*`:
+3. `refs/local/*`:
     - dispensible stuff that is used for local import actions (not needed for collaboration)
     - hidden stuff that should not be published on a clone/fork
 <br>
